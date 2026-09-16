@@ -1,0 +1,57 @@
+---
+title: "Lab2"
+author: "Andrew Crawford"
+date: "2026-09-14"
+output: html_document
+---
+
+# Lab 2 - Analysis Notebook
+
+## Data Set up
+
+```{r}
+
+library(survival)
+library(ggplot2)
+
+data(pbc)
+
+```
+
+## Non-trivial transformation/analysis
+
+**Chose the variable platelet as a point of analysis and transformation. In particular, if it connects to the progressioning of stages of the Biliary Cirrhosis disease.**
+
+```{r}
+mean(pbc$platelet, na.rm = TRUE)
+median(pbc$platelet, na.rm = TRUE)
+range(pbc$platelet, na.rm = TRUE)
+```
+
+```{r}
+aggregate(platelet ~ stage, data = pbc, FUN = mean, na.rm = TRUE)
+```
+
+## Visualization
+
+```{r}
+pbc_no_na <- pbc[!is.na(pbc$stage),]
+
+ggplot(pbc_no_na, aes(x = factor(stage), y = platelet)) +
+  geom_boxplot(na.rm = TRUE) +
+  labs(
+    x = "Disease Stage",
+    y = "Platelet Count (cubic mL/1000)", title = "Platelet Count at Different Stages of Primary Biliary Cirrhosis"
+  )
+
+```
+
+## Short written interpretation of the result
+
+Platelet ranges from 62 to 721 count. The box plot shows a decline in platelet counts from stage 1 to 4. Stage 1 had a median of 270, with moderate spread, compared with Stage 4, which had a median of 220. But the stage 4 does have several outliers. Additionally, the box plots overlap, suggesting that platelet count alone cannot indicate the patient's disease stage. But the principle can be applied to other variables to observe the impacts of D-penicillamine in primary biliary cirrhosis.
+
+# Graduate addendum
+
+To compare the R notebook with the Python notebook in Jupyter, I found the R notebook faster to write. Part of this was the fact that I had used ggplot2 before, which made it faster to create a visualization. For Python, I had to learn a new package (matplotlib) that took time. But I will admit that, to recreate the graph, Python had fewer elements to define, which made it faster.
+
+I think I would trust R and a Python notebook equally because the outputs using the same dataset match what I expected. The values were the same when replicating in separate programming environments.
